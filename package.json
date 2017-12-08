@@ -55,7 +55,6 @@
     "test": "node scripts/test.js --env=jsdom",
     "server": "node mock/app.js",
     "lint": "eslint src/**/*.js src/**/*.jsx",
-    "pre-commit": "npm run lint"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -120,5 +119,8 @@
     "less-loader": "^4.0.5",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0"
-  }
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }
