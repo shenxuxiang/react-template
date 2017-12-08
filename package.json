@@ -55,7 +55,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "server": "node mock/app.js",
     "lint": "eslint src/**/*.js src/**/*.jsx",
-    "precommit": "npm run lint"
+    "pre-commit": "npm run lint"
   },
   "jest": {
     "collectCoverageFrom": [
