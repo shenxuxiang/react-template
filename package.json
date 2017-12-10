@@ -125,5 +125,7 @@
   },
   "pre-commit": [
     "lint"
-  ]
+  ],
+  "precommit.silent": true,
+  "precommit.color": true
 }
