@@ -11,7 +11,7 @@ const onError = (e) => { // 整体的错误处理
   console.log(msg);
   message.error(msg);
   if (msg === 'request_error') {
-    console.log('请求超时，请重新登录！');
+    console.log('请求超时，请重新登录！');;
   } else {
     console.log('123456789');
   }
