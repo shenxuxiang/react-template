@@ -16,6 +16,6 @@ export default class List extends PureComponent {
         <p>这是list页面</p>
         <p>这是list页面</p>
       </div>
-    )
+    );
   }
-};
+}

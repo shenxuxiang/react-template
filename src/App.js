@@ -4,6 +4,7 @@ import styles from './app.less';
 
 class App extends Component {
   render() {
+    /* eslint-disable */
     return (
       <div className={styles.app}>
         <div className={styles.app_head}>
@@ -20,10 +21,10 @@ class App extends Component {
             <Link to="/detail">detail</Link>
           </li>
         </ul>
-        {this.props.children}
+        { this.props.children }
       </div>
     );
+    /* eslint-enable */
   }
 }
-
 export default App;

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Route, Redirect, Switch, routerRedux } from 'dva/router';
-// import dynamic from 'dva/dynamic';
-
-import App from './App'
+import App from './App';
 import Home from './routes/home';
 import List from './routes/list';
 import Detail from './routes/detail';
+
 const { ConnectedRouter } = routerRedux;
-const routerConfig = ({ history }) => {
+const routerConfig = ({ history }) => { // eslint-disable-line
   return (
     <ConnectedRouter history={history}>
       <App>
@@ -19,7 +18,6 @@ const routerConfig = ({ history }) => {
         </Switch>
       </App>
     </ConnectedRouter>
-  )
-}
-
+  );
+};
 export default routerConfig;

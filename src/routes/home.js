@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { withRouter, routerRedux } from 'dva/router';
+import { withRouter } from 'dva/router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { autobind } from 'core-decorators';
+import { Button } from 'antd';
 import style from './home.less';
-import { message, Button } from 'antd';
 
 const fetchDataFunction = (loading, type) => query => ({
   type,
@@ -12,7 +12,7 @@ const fetchDataFunction = (loading, type) => query => ({
   payload: query || {},
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userInfo: state.home.userInfo,
   count: state.home.count,
   files: state.home.files,
@@ -42,33 +42,31 @@ export default class Home extends PureComponent {
     };
   }
 
-  @autobind
-  handle() {
-    this.props.getUserInfo({userName: 'shenjun', password: '456789'});
+  get userInfoDom() {
+    const userInfo = this.props.userInfo || {};
+    const result = Object.keys(userInfo).map(item => (
+      <p key={item}>{ userInfo[item] }</p>
+    ));
+    return result;
   }
 
   @autobind
-  success() {
-    message.success('123456789')
+  handle() {
+    this.props.getUserInfo({ userName: 'shenjun', password: '456789' });
   }
+
   success = () => {
-    this.props.getUserCount({userName: 'xiaoming', password: '123456'})
+    this.props.getUserCount({ userName: 'xiaoming', password: '123456' });
   }
+
   uploadFile = (e) => {
     const file = e.target.files[0];
-    const type = file.type;
+    const { type } = file;
     const IMAGE_TYPE = /^image\/(png|jpg|jpeg|bmp)$/;
     if (!IMAGE_TYPE.test(type)) return;
     this.props.uploadFiles(new FormData('file', file));
   }
 
-  get userInfoDom() {
-    const userInfo = this.props.userInfo || {};
-    let result = Object.keys(userInfo).map((item, index) => (
-      <p key={index}>{userInfo[item]}</p>
-    ))
-    return result;
-  }
   render() {
     return (
       <div className={style.app_title}>
@@ -86,6 +84,6 @@ export default class Home extends PureComponent {
           onChange={this.uploadFile}
         />文件上传
       </div>
-    )
+    );
   }
-};
+}

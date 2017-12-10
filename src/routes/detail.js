@@ -16,6 +16,6 @@ export default class Detial extends PureComponent {
         <p>这是detial页面</p>
         <p>这是detial页面</p>
       </div>
-    )
+    );
   }
-};
+}
