@@ -1,12 +1,20 @@
 import React from 'react';
 import { Route, Redirect, Switch, routerRedux } from 'dva/router';
+import dynamic from 'dva/dynamic';
 import App from './App';
-import Home from './routes/home';
+// import Home from './routes/home';
 import List from './routes/list';
 import Detail from './routes/detail';
 
 const { ConnectedRouter } = routerRedux;
-const routerConfig = ({ history }) => { // eslint-disable-line
+const routerConfig = ({ history, app }) => { // eslint-disable-line
+  const Home = dynamic({
+    app,
+    models: () => [
+      import('./storeModel'),
+    ],
+    component: () => import('./routes/home'),
+  });
   return (
     <ConnectedRouter history={history}>
       <App>

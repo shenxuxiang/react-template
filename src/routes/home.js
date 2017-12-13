@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'dva/router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+// import { autobind } from 'core-decorators';
 import { Button } from 'antd';
 import style from './home.less';
+import Foo from '../components/Foo';
+// import Bar from '../components/Bar';
 
 const fetchDataFunction = (loading, type) => query => ({
   type,
@@ -39,6 +41,7 @@ export default class Home extends PureComponent {
   constructor() {
     super();
     this.state = {
+      foo: 'default Foo',
     };
   }
 
@@ -50,8 +53,7 @@ export default class Home extends PureComponent {
     return result;
   }
 
-  @autobind
-  handle() {
+  handle = () => {
     this.props.getUserInfo({ userName: 'shenjun', password: '456789' });
   }
 
@@ -65,6 +67,12 @@ export default class Home extends PureComponent {
     const IMAGE_TYPE = /^image\/(png|jpg|jpeg|bmp)$/;
     if (!IMAGE_TYPE.test(type)) return;
     this.props.uploadFiles(new FormData('file', file));
+  }
+
+  updateFoo = (e) => {
+    this.setState({
+      foo: e.target.value,
+    });
   }
 
   render() {
@@ -83,6 +91,8 @@ export default class Home extends PureComponent {
           type="file"
           onChange={this.uploadFile}
         />文件上传
+        <input type="text" value={this.state.foo} onChange={this.updateFoo} />
+        <Foo foo="123456" />
       </div>
     );
   }
