@@ -5,7 +5,7 @@ import App from './App';
 // import Home from './routes/home';
 import List from './routes/list';
 import Detail from './routes/detail';
-
+// 这里是我不想要的
 const { ConnectedRouter } = routerRedux;
 const routerConfig = ({ history, app }) => { // eslint-disable-line
   const Home = dynamic({

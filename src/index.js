@@ -10,11 +10,12 @@ const onError = (e) => { // 整体的错误处理
   const { msg } = e;
   console.log(msg);
   message.error(msg);
-  // if (msg === 'request_error') {
-  //   console.log('请求超时，请重新登录！');
-  // } else {
-  //   console.log('123456789');
-  // }
+  // 这里是我不想要的
+  if (msg === 'request_error') {
+    console.log('请求超时，请重新登录！');
+  } else {
+    console.log('123456789');
+  }
 };
 
 const app = dva({
