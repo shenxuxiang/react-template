@@ -8,10 +8,6 @@ import Detail from './routes/detail';
 // 这里是我不想要的
 // 这里是我不想要的
 // 这里是我不想要的
-// 这里是我不想要的
-// 这里是我不想要的
-// 这里是我不想要的
-// 这里是我不想要的
 const { ConnectedRouter } = routerRedux;
 const routerConfig = ({ history, app }) => { // eslint-disable-line
   const Home = dynamic({
