@@ -75,6 +75,12 @@ export default class Home extends PureComponent {
     });
   }
 
+  handleFoo = (e) => {
+    this.setState({
+      foo: e.target.value,
+    });
+  }
+
   render() {
     return (
       <div className={style.app_title}>
@@ -92,7 +98,7 @@ export default class Home extends PureComponent {
           onChange={this.uploadFile}
         />文件上传
         <input type="text" value={this.state.foo} onChange={this.updateFoo} />
-        <Foo foo="123456" />
+        <Foo foo="shenxuxiang" onhandle={this.handleFoo} />
       </div>
     );
   }
