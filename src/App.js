@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'dva/router';
 import styles from './app.less';
 
+/* eslint-disable */
 class App extends Component {
   render() {
-    /* eslint-disable */
     return (
       <div className={styles.app}>
         <div className={styles.app_head}>
-          <h1 className={styles.app_title}>测试dva dom</h1>
+          <h1 className={`${styles.app_title} title`}>测试dva dom</h1>
         </div>
         <ul>
           <li>
@@ -24,7 +24,6 @@ class App extends Component {
         { this.props.children }
       </div>
     );
-    /* eslint-enable */
   }
 }
 export default App;

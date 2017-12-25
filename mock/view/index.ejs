@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <title>React App</title>
+    <script src="./jquery.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <h1>您所访问的资源不存在</h1>
+      <input type="file" id="file">上传图片...
+      <button type="button" id="btn">上传</button>
+    </div>
+  </body>
+</html>
+
+<script>
+  $(function () {
+    let data = new FormData();
+    $("#file").change(function(e) {
+      const file = e.target.files[0];
+      data.append('file', file);
+    })
+    $('#btn').click(function (e) {
+      console.log(data);
+      $.ajax({
+        url: '/config/uploadfiles',
+        method: 'POST',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false
+      })
+    })
+  })
+</script>

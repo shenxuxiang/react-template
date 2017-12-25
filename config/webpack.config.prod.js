@@ -90,7 +90,7 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-      
+
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -121,7 +121,7 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
+
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -150,8 +150,13 @@ module.exports = {
             loader: require.resolve('babel-loader'),
             options: {
               compact: true,
-              plugins: ['transform-decorators-legacy'],
-              ["import", { libraryName: "antd", style: "css" }]
+              presets: ['es2015', 'stage-2', 'react'],
+              ['import', { libraryName: "antd", style: "css" }]
+              plugins: [
+                'transform-runtime',
+                'add-module-exports',
+                'transform-decorators-legacy',
+              ],
             },
           },
           // The notation here is somewhat confusing.
@@ -327,7 +332,7 @@ module.exports = {
       },
       mangle: {
         safari10: true,
-      },        
+      },
       output: {
         comments: false,
         // Turned on because emoji and regex is not minified properly using default

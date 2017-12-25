@@ -1,13 +1,13 @@
 const toRequest = (url, method, headers, payload, isFormData) => {
   const HEADERS = {
-    // "Accept": "application/json, text/plain, */*",
+    Accept: 'application/json, text/plain, */*',
     'Content-Type': 'application/x-www-form-urlencoded',
   };
   let URL = url;
   const configOpts = {
     method: (method || 'POST').toUpperCase(),
     credentials: 'include',
-    headers: { ...HEADERS, ...headers },
+    headers: isFormData ? {} : { ...HEADERS, ...headers },
     body: isFormData ? payload : JSON.stringify(payload),
   };
   if (configOpts.method === 'GET') {
@@ -18,21 +18,22 @@ const toRequest = (url, method, headers, payload, isFormData) => {
     URL = URL.slice(0, URL.length - 1);
     configOpts.body = JSON.stringify();
   }
+  /* eslint-disable */
   return new Promise((resolve, reject) => {
     fetch(URL, configOpts)
       .then((resp) => {
-        console.log(resp);
         return resp.json()
           .then((json) => {
-            /* eslint-disable */
             if (resp.ok) {
-              return json;
+              resolve(json);
             } else {
               const error = { ...json, status: resp.status, statusText: resp.statusText };
-              return Promise.reject(error);
+              reject(error);
             }
-            /* eslint-enable */
-          });
+          })
+          .catch((err) => {
+            reject({msg: 'request_err'});
+          })
       })
       .then((data) => {
         resolve(data);

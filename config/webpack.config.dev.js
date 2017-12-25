@@ -152,6 +152,7 @@ module.exports = {
               plugins: [
                 ["import", { libraryName: "antd", style: 'css' }],
                 'transform-runtime',
+                'add-module-exports',
                 'transform-decorators-legacy'
               ],
             },
@@ -206,9 +207,6 @@ module.exports = {
                 },
               },
               {
-                loader: require.resolve('less-loader'),
-              },
-              {
                 loader: require.resolve('postcss-loader'),
                 options: {
                   // Necessary for external CSS imports to work
@@ -227,6 +225,9 @@ module.exports = {
                     }),
                   ],
                 },
+              },
+              {
+                loader: require.resolve('less-loader'),
               },
             ],
           },

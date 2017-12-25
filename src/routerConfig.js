@@ -1,25 +1,20 @@
 import React from 'react';
 import { Route, Redirect, Switch, routerRedux } from 'dva/router';
-import dynamic from 'dva/dynamic';
 import App from './App';
-// import Home from './routes/home';
 import List from './routes/list';
 import Detail from './routes/detail';
-// 这里是我不想要的123
+import dynamic from './components/dynamic';
+
 const { ConnectedRouter } = routerRedux;
 const routerConfig = ({ history, app }) => { // eslint-disable-line
-  const Home = dynamic({
-    app,
-    models: () => [
-      import('./storeModel'),
-    ],
-    component: () => import('./routes/home'),
-  });
   return (
     <ConnectedRouter history={history}>
       <App>
         <Switch>
-          <Route path="/home" component={Home} />
+          <Route
+            path="/home"
+            component={dynamic(app, ['storeModel'], 'home')}
+          />
           <Route path="/list" component={List} />
           <Route path="/detail" component={Detail} />
           <Redirect from="/" to="/home" />

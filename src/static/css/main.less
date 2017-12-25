@@ -1,0 +1,12 @@
+@bgColor: @currentBgColor;
+@currentBgColor: #ccc;
+@fontColor: @currentFontColor;
+@currentFontColor: #333;
+@largeSize: 16px;
+@middleSize: 14px;
+@smallSize: 12px;
+
+.borderStyle(@w:1px, @s:solid, @c:skyblue, @r: 4px) {
+  border: @w @s @c;
+  border-radius: @r;
+}
