@@ -3,7 +3,6 @@ import { hashRouter } from 'dva/router';
 import createLoading from 'dva-loading';
 import { message } from 'antd';
 import 'babel-polyfill';
-import 'isomorphic-fetch';
 import routerConfig from './routerConfig';
 
 const onError = (e) => { // 整体的错误处理

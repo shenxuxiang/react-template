@@ -1,118 +1,151 @@
-const inspect = require('util').inspect
-const path = require('path')
-const os = require('os')
-const fs = require('fs')
-const Busboy = require('busboy')
+// const path = require('path');
+// const fs = require('fs');
+// const Busboy = require('busboy');
+// /**
+//  * 获取到文件的后缀名
+//  * @params { string } fileName 文件名称
+//  * @return { string }          ./xxx
+//  */
+// function getSuffixName(fileName) {
+//   return path.extname(fileName);
+// }
 
-/**
- * 同步创建文件目录
- * @param  {string} dirname 目录绝对地址
- * @return {boolean}        创建目录结果
- */
-function mkdirsSync( dirname ) {
-  if (fs.existsSync( dirname )) {
-    return true
+// /**
+// * 创建文件路径
+// * @params { string } dirname 决定路径
+// * @return { bool }           创建的结果
+// */
+// function mkdirSync(dirname) {
+//   if (fs.existsSync(dirname)) {
+//     return true;
+//   } else {
+//     if (mkdirSync(path.dirname(dirname))) {
+//       fs.mkdirSync(dirname);
+//       return true
+//     }
+//   }
+// }
+
+// /**
+//  * 上传文件到指定的路径
+//  * @params { object } ctx koa上下文
+//  * @params { string } storagePath 上传的路径
+//  * @return { promise }
+//  */
+// function uploadFile(ctx, storagePath) {
+//   const req = ctx.req;
+//   const res = ctx.res;
+//   const busboy = new Busboy({headers: req.headers});
+//   const result = {
+//     code: 1111,
+//     msg: 'ERROR',
+//     resultDate: null,
+//   };
+//   const mkdirResult = mkdirSync(storagePath);
+//   return new Promise((reject, resolve) => {
+//     *
+//      * 文件开始解析
+//      * @params { string }   fieldname 文件的字段名称
+//      * @params { object }   file      文件流
+//      * @params { string }   filename  文件名
+//      * @params { encoding } string    编码方式
+//      * @params { string }   string    mimetype类型
+
+//     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+//       console.log('文件开始上传...');
+//       const fileName = Math.random().toString().slice(2) + getSuffixName(filename);
+//       file.pipe(fs.createWriteStream(fileName));
+//       file.on('end', function() {
+//         console.log('文件上传完成！！！');
+//         result.code = 0;
+//         result.msg = 'SUCCESS';
+//         result.resultDate = '文件上传完成！！！';
+//         resolve(result);
+//       });
+//     });
+
+//     busboy.on('finish', function() {
+//       console.log('文件上传结束...');
+//       resolve(result);
+//     });
+
+//     busboy.on('error', function(err) {
+//       console.log('文件上传出错...');
+//       reject(result);
+//     });
+
+//     req.pipe(busboy);
+//   });
+// }
+
+// module.exports = uploadFile;
+
+const Busboy = require('busboy');
+const path = require('path');
+const fs = require('fs');
+
+function getSuffixName(filename) {
+  return path.extname(filename);
+};
+
+function getPrevPath(pathName) {
+  const prevArr = path.join(pathName).split(/\\/);
+  prevArr.pop();
+  const prevPath = prevArr.join('/');
+  console.log(path.join(prevPath));
+  return path.join(prevPath);
+};
+
+function mkDirSync(pathName) {
+  if (fs.existsSync(pathName)) {
+    return true;
   } else {
-    if (mkdirsSync( path.dirname(dirname)) ) {
-      fs.mkdirSync( dirname )
-      return true
+    const prevpath = getPrevPath(pathName);
+    if (fs.existsSync(prevpath)) {
+      fs.mkdirSync(pathName);
+      return true;
+    } else {
+      mkDirSync(prevpath);
     }
   }
-}
+};
 
-/**
- * 获取上传文件的后缀名
- * @param  {string} fileName 获取上传文件的后缀名
- * @return {string}          文件后缀名
- */
-function getSuffixName( fileName ) {
-  let nameList = fileName.split('.')
-  return nameList[nameList.length - 1]
-}
-
-/**
- * 上传文件
- * @param  {object} ctx     koa上下文
- * @param  {object} options 文件上传参数 fileType文件类型， path文件存放路径
- * @return {promise}
- */
-function uploadFile( ctx, options) {
-  let req = ctx.req
-  let res = ctx.res
-  let busboy = new Busboy({headers: req.headers})
-
-  // 获取类型
-  let fileType = options.fileType || 'common'
-  let filePath = path.join( options.path,  fileType)
-  let mkdirResult = mkdirsSync( filePath )
-
+function uploadFile(ctx, storagepath) {
+  const res = ctx.res;
+  const req = ctx.req;
+  const busboy = new Busboy({ headers: req.headers });
+  const mkDirSyncResult = mkDirSync(storagepath);
+  const result = {
+    code: 0,
+    msg: 'SUCCESS',
+    content: null,
+  };
   return new Promise((resolve, reject) => {
-    console.log('文件上传中...')
-    let result = {
-      success: false,
-      formData: {},
-    }
-
-    // 解析请求文件事件
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      let fileName = Math.random().toString(16).substr(2) + '.' + getSuffixName(filename)
-      let _uploadFilePath = path.join( filePath, fileName )
-      let saveTo = path.join(_uploadFilePath)
-
-      // 文件保存到制定路径
-      file.pipe(fs.createWriteStream(saveTo))
-
-      // 文件写入事件结束
+      console.log('文件开始上传...');
+      const fileName = Math.random().toString().slice(2) + getSuffixName(filename);
+      const savePath = path.join(storagepath, fileName);
+      file.pipe(fs.createWriteStream(savePath));
       file.on('end', function() {
-        result.success = true
-        result.message = '文件上传成功'
-
-        console.log('文件上传成功！')
-        resolve(result)
-      })
-    })
-
-    // 解析表单中其他字段信息
-    busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
-      console.log('表单字段数据 [' + fieldname + ']: value: ' + inspect(val));
-      result.formData[fieldname] = inspect(val);
+        console.log('文件上传结束！！！');
+        result.content = {
+          filename: fileName,
+          url: `http://localhost:8080/images/${fileName}`,
+        };
+      });
+    });
+    busboy.on('finish', function() {
+      console.log('文件上传完成！！！');
+      resolve(result);
     });
 
-    // 解析结束事件
-    busboy.on('finish', function( ) {
-      console.log('文件上结束')
-      resolve(result)
-    })
-
-    // 解析错误事件
-    busboy.on('error', function(err) {
-      console.log('文件上出错')
-      reject(result)
-    })
-
-    req.pipe(busboy)
-  })
-
-}
-
-
-module.exports =  {
-  uploadFile
-}
-
-
-
-
-/**
- * @params { string } 路径
- * @return { bool }
- */
-function mkdirSync(dirname) {
-  if (fs.existsSync(dirname)) {
-    return true;
-  } else {
-    const dirName = path.dirname(dirname);
-    fs.mkdirname(dirName);
-    return true;
-  }
-}
+    busboy.on('error', function(error) {
+      console.log('文件上传出错了~~~');
+      result.code = 1;
+      result.msg = 'ERROR';
+      reject(result);
+    });
+    req.pipe(busboy);
+  });
+};
+module.exports = uploadFile;

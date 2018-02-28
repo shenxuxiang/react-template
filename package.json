@@ -58,7 +58,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "server": "node mock/app.js",
-    "lint": "eslint src/**/*.{js,jsx} --fix"
+    "lint": "eslint --ext .jsx --ext .js src/ --fix"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -123,14 +123,12 @@
     "koa-webpack-middleware": "^1.0.7",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "monk": "^6.0.5",
     "pre-commit": "^1.2.2",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0"
   },
-  "pre-commit": {
-    "silent": true,
-    "run": [
-      "lint"
-    ]
-  }
+  "pre-commit": [
+    "lint"
+  ]
 }

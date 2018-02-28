@@ -11,7 +11,7 @@ export default {
       age: '',
       sex: '',
     },
-    count: 1,
+    register: '',
     files: '',
   },
   reducers: {
@@ -25,10 +25,9 @@ export default {
     },
     getCountSuccess(state, action) {
       const { payload: { resultData = 100 } } = action;
-      const { count } = resultData;
       return {
         ...state,
-        count,
+        register: resultData,
       };
     },
     uploadFilesSuccess(state, action) {
